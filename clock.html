@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock</title>
+</head>
+<body>
+    <div id="main">
+        <h1>Clock</h1>
+        <div id="times">
+            <p id="hrs">00</p>
+            <p>:</p>
+            <p id="mins">00</p>
+            <p>:</p>
+            <p id="secs">00</p>
+        </div>
+    </div>
+
+
+
+    <style>
+*{
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+}
+
+        body{
+            background-color: #0000009a;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        #main{
+            position: absolute;
+            background-color: #b89569;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            width: 40rem;
+            height: 10rem;
+            text-align: center;
+            color: #000000;
+        }
+
+        #main h1{
+            font-size: 40px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
+        }
+
+        #times{
+            display: flex;
+            font-size: 30px;
+            text-align: center;
+            padding: 25px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #times p{
+            font-family: 'Courier New', Courier, monospace;
+            padding: 20px;
+        }
+
+    </style>
+        
+    <script>
+        let hrs = document.getElementById('hrs')
+        let mins = document.getElementById('mins')
+        let secs = document.getElementById('secs')
+
+        setInterval(() => {
+            let currentTime = new Date();
+
+            hrs.innerHTML = (currentTime.getHours()<10?"0":"") + currentTime.getHours()
+            mins.innerHTML = (currentTime.getMinutes()<10?"0":"") + currentTime.getMinutes()
+            secs.innerHTML = (currentTime.getSeconds()<10?"0":"") + currentTime.getSeconds()
+        }, 1000);
+    </script>
+</body>
+</html>

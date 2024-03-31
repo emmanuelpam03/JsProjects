@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather App</h1>
+        <form action="">
+            <input type="text" id="city-input" placeholder="Enter City">
+            <input type="submit" value="Get Weather">
+        </form>
+        <div id="weather-data">
+            <div class="icon">
+                <!-- <img src="http://openweathermap.org/img/wn/01d.png" alt="weather icon"> -->
+            </div>
+            <div class="temperature"></div>
+            <div class="description"></div>
+            <div class="details">
+                <!-- <div>Feels like: 30°C</div>
+                <div>Humidity: 30%</div>
+                <div>Wind speed: 7m/s</div> -->
+            </div>
+        </div>
+    </div>
+
+
+    <style>
+        body{
+            margin: 0;
+            font-family: "montserrat", sans-serif;
+            background-color: #f7f7f7;
+        }
+
+        .container{
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            text-align: center;
+            margin: 0 auto;
+            margin-top: 50px;
+            border-radius: 5px;
+            padding: 20px;
+        }
+
+        form{
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        form input[type="text"]{
+            padding: 10px;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            width: 60%;
+        }
+
+        form input[type="submit"]{
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            outline: none;
+            cursor: pointer;
+            transition: background-color .3s ease;
+        }
+
+        form input[type="submit"]:hover{
+            background-color: #0062cc;
+        }
+
+        .icon img{
+            width: 100px;
+            height: 100px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
+        .temperature{
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .description{
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .details{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .details > div{
+            padding: 20px;
+            background-color: #f1f1f1;
+            margin: 10px;
+            flex: 1;
+            border-radius: 5px;
+            text-align: center;
+            min-height: 45px;
+        }
+
+        @media(max-width: 768px){
+            form{
+                flex-direction: column;
+            }
+
+            form input[type="text"]{
+                width: 100%;
+                margin: 10px;
+            }
+        }
+    </style>
+
+    <script>
+        const apiKey = "0026fa13f8e20c14bf96b5ee24d4d516"
+        const weatherDataEl = document.getElementById('weather-data')
+        const cityInputEl = document.getElementById('city-input')
+        const formEl = document.querySelector('form')
+
+        formEl.addEventListener('submit', (event)=>{
+            event.preventDefault()
+            const cityValue = cityInputEl.value
+            getWeatherData(cityValue)
+        } )
+
+        async function getWeatherData(cityValue) {
+            try {
+                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityValue}&appid=${apiKey}&units=metric`)
+
+                if (!response.ok) {
+                    throw new Error("Newtwork response wan not ok")
+                }
+
+                const data = await response.json()
+
+                const temperature = Math.round(data.main.temp)
+                const description = data.weather[0].description
+                const icon = data.weather[0].icon
+
+                const details = [
+                    `Feels Like: ${Math.round(data.main.feels_like)}°C`,
+                    `Humidity: ${data.main.humidity}%`,
+                    `Wind speed: ${data.wind.speed}m/s`,
+                ]
+
+                weatherDataEl.querySelector('.icon').innerHTML = `<img src="http://openweathermap.org/img/wn/${icon}.png" alt="weather icon">`
+
+                weatherDataEl.querySelector('.temperature').textContent = `${temperature}°C`
+
+                weatherDataEl.querySelector('.description').textContent = description
+
+                weatherDataEl.querySelector('.details').innerHTML = details.map((detail)=>`<div>${detail}</div>`)
+                .join("");
+            } catch (error) {
+                weatherDataEl.querySelector('.icon').innerHTML = ``
+
+                weatherDataEl.querySelector('.temperature').textContent = ``
+
+                weatherDataEl.querySelector('.description').textContent = "An error happened, please try again later"
+
+                weatherDataEl.querySelector('.details').innerHTML = ""
+            }
+        }
+
+    </script>
+</body>
+</html>

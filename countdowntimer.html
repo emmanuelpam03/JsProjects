@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+</head>
+<body>
+    <h1>New Year Countdown</h1>
+    <div id="main">
+        <div id="time">
+            <p id="days">00</p>
+            <span>Days</span>
+        </div>
+
+        <div id="time">
+            <p id="hrs">00</p>
+            <span>Hours</span>
+        </div>
+
+        <div id="time">
+            <p id="mins">00</p>
+            <span>Minutes</span>
+        </div>
+
+        <div id="time">
+            <p id="secs">00</p>
+            <span>Seconds</span>
+        </div>
+    </div>
+
+    <style>
+        body{
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #main{
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        #time{
+            margin: 15px;
+        }
+
+        #time p{
+            font-size: 40px;
+        }
+
+        #time span{
+            font-size: 40px;
+        }
+
+        h1{
+            font-size: 60px;
+        }
+
+    </style>
+
+    <script>
+        let days = document.getElementById('days')
+        let hrs = document.getElementById('hrs')
+        let mins = document.getElementById('mins')
+        let secs = document.getElementById('secs')
+
+        let currentYear = new Date().getFullYear()
+        let newYear = new Date(`January 1 ${currentYear + 1} 00:00:00`)
+
+        function updateCountdown() {
+            let currentTime = new Date()
+            let diff = newYear - currentTime
+
+            let d = Math.floor(diff / 1000 / 60/ 60/ 24)
+            let h = Math.floor(diff / 1000 / 60/ 60 % 24)
+            let m = Math.floor(diff / 1000 / 60 % 60)
+            let s = Math.floor(diff / 1000 % 60)
+
+            days.innerHTML = d
+            hrs.innerHTML = h < 10? "0"+h:h
+            mins.innerHTML = m < 10? "0"+m:m 
+            secs.innerHTML = s<10? "0"+s:s
+        }
+
+        setInterval(updateCountdown,1000)
+    </script>
+</body>
+</html>
